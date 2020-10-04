@@ -8,6 +8,8 @@ public class Controller {
         int rows = view.getNumOfRows();
         matrixService.createMatrix(rows);
         matrixService.fillMatrix(view.getMatrixFromUser(rows));
-//        System.out.println(matrixService.getUniqueOperations());
+        matrixService.setUniqueOperations();
+        System.out.println(matrixService.getUniqueOperations());
+        view.printMatrix(matrixService.getAdjacencyMatrix());
     }
 }

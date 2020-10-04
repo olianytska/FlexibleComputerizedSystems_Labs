@@ -1,10 +1,12 @@
 package com.vlados.FirstLab;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MatrixService {
-    Matrix matrix;
+    private Matrix matrix;
+    private List<String> uniqueOperations;
 
     public void createMatrix(int numOfRows) {
         matrix = new Matrix(numOfRows);
@@ -14,7 +16,7 @@ public class MatrixService {
         this.matrix.setMatrix(matrix);
     }
 
-    public ArrayList<String> getUniqueOperations() throws NullPointerException {
+    public void setUniqueOperations() throws NullPointerException {
         ArrayList<String> uniqueOperations = new ArrayList<>();
         List<String> row;
         for (int i = 0; i < matrix.getNumOfRows(); i++) {
@@ -25,6 +27,23 @@ public class MatrixService {
                 }
             }
         }
+        this.uniqueOperations = uniqueOperations;
+    }
+
+    public List<String> getUniqueOperations() {
         return uniqueOperations;
+    }
+
+    public Integer[][] getAdjacencyMatrix() {
+        Integer[][] intermediateMatrix = new Integer[this.matrix.getNumOfRows()][this.uniqueOperations.size()];
+        for (int i = 0; i < intermediateMatrix.length; i++) {
+            for (int j = 0; j < intermediateMatrix[i].length; j++) {
+                intermediateMatrix[i][j] = matrix.getMatrix().get(i).contains(this.uniqueOperations.get(j)) ? 1 : 0;
+            }
+        }
+        Integer[][] adjacencyMatrix = new Integer[matrix.getNumOfRows()][matrix.getNumOfRows()];
+//        calculate adjacency matrix
+        return  adjacencyMatrix;
+
     }
 }
