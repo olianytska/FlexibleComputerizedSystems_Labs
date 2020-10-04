@@ -1,16 +1,14 @@
-package com.vlados;
+package com.vlados.FirstLab;
 
 import java.util.Scanner;
 
-public class Task {
-
+public class View {
     private String getUsersLine() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine().trim();
     }
 
-    private String[][] getMatrixFromUser() {
-        
-        String[][] matrix = new String[][];
+    public int getNumOfRows() {
+        return Integer.parseInt(getUsersLine());
     }
 }
