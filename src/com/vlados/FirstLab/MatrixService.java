@@ -41,9 +41,24 @@ public class MatrixService {
                 intermediateMatrix[i][j] = matrix.getMatrix().get(i).contains(this.uniqueOperations.get(j)) ? 1 : 0;
             }
         }
+//        return intermediateMatrix;
         Integer[][] adjacencyMatrix = new Integer[matrix.getNumOfRows()][matrix.getNumOfRows()];
-//        calculate adjacency matrix
-        return  adjacencyMatrix;
-
+        int count = 0;
+        for (int i = 0; i < intermediateMatrix.length - 1; i++) {
+            for (int j = i + 1; j < intermediateMatrix.length; j++) {
+                for(int k = 0; k < uniqueOperations.size(); k++) {
+                    if(intermediateMatrix[i][k] + intermediateMatrix[j][k] == 1) {
+                        count++;
+                    }
+                }
+                adjacencyMatrix[j][i] = count;
+                adjacencyMatrix[i][j] = 0;
+                count = 0;
+            }
+        }
+      for(int i = 0; i < adjacencyMatrix.length; i++) {
+          adjacencyMatrix[i][i] = 0;
+      }
+      return  adjacencyMatrix;
     }
 }
