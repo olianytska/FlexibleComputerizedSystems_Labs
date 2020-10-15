@@ -11,5 +11,6 @@ public class Controller {
         matrixService.setUniqueOperations();
         System.out.println(matrixService.getUniqueOperations());
         view.printMatrix(matrixService.getAdjacencyMatrix());
+        System.out.print(matrixService.getGroups(matrixService.getAdjacencyMatrix()));
     }
 }

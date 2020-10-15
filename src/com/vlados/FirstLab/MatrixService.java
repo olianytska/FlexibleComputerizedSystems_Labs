@@ -1,7 +1,6 @@
 package com.vlados.FirstLab;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MatrixService {
@@ -60,5 +59,56 @@ public class MatrixService {
           adjacencyMatrix[i][i] = 0;
       }
       return  adjacencyMatrix;
+    }
+
+    public List<List<Integer>> getGroups(Integer[][] adjacencyMatrix) {
+        List<List<Integer>> groups = new ArrayList<>();
+        List<Integer> operations = new ArrayList<>();
+        for(int i = 0; i < adjacencyMatrix.length; i++) {
+            operations.add(i+1);
+        }
+        List<int[]> coords = new ArrayList<>();
+        int maxElem = -1;
+        int maxElemRow = -1;
+        int maxElemColumn = -1;
+        do {
+            for (int i = 0; i < adjacencyMatrix.length; i++) {
+                for (int j = 0; j < adjacencyMatrix.length; j++) {
+                    if(adjacencyMatrix[i][j] > maxElem) {
+                        maxElem = adjacencyMatrix[i][j];
+                        maxElemRow = i;
+                        maxElemColumn = j;
+                    }
+                }
+            }
+            coords.add(new int[]{maxElemRow, maxElemColumn});
+            for(int i = 0; i < coords.size(); i++) {
+                for (int j = 0; j < adjacencyMatrix.length; j ++) {
+                    if (adjacencyMatrix[coords.get(i)[0]][j] == maxElem)
+                        coords.add(new int[]{coords.get(i)[0], j});
+                    if (adjacencyMatrix[j][coords.get(i)[0]] == maxElem)
+                        coords.add(new int[]{j, coords.get(i)[0]});
+                }
+            }
+            groups.add(new ArrayList<>());
+            for (int[] coord : coords) {
+                if (!groups.get(groups.size() - 1).contains(coord[0] + 1)) {
+                    groups.get(groups.size() - 1).add(coord[0] + 1);
+                }
+                if (!groups.get(groups.size() - 1).contains(coord[1] + 1)) {
+                    groups.get(groups.size() - 1).add(coord[1] + 1);
+                }
+            }
+            for (int i = 0; i < adjacencyMatrix.length; i++) {
+                for (int k = 0; k < groups.get(groups.size()-1).size(); k++) {
+                    adjacencyMatrix[k][i] = 0;
+                    adjacencyMatrix[i][k] = 0;
+                    operations.remove((Integer) k);
+                }
+            }
+
+        } while(maxElem != 0);
+        if(operations.size() == 1) groups.add(new ArrayList<>(operations.get(0)));
+        return groups;
     }
 }
