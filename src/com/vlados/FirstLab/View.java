@@ -1,9 +1,6 @@
 package com.vlados.FirstLab;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class View {
     private String getUsersLine() {
@@ -29,6 +26,12 @@ public class View {
                 System.out.print(matrix[i][j] + "\t");
             }
             System.out.println();
+        }
+    }
+
+    public void printGroups(List<Set<Integer>> groups) {
+        for(Set<Integer> group : groups) {
+            System.out.println(group);
         }
     }
 }

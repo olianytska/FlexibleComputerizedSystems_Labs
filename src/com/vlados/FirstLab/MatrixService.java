@@ -5,22 +5,7 @@ import java.util.*;
 public class MatrixService {
     private Matrix matrix;
     private List<String> uniqueOperations;
-    public Integer[][] adjacencyMatrix1 = {
-        {0, 0, 0, 0},
-        {3, 0, 0, 0},
-        {1, 4, 0, 0},
-        {4, 1, 5, 0}
-    };
 
-    public Integer[][] adjacencyMatrix2 = {
-            {0, 0, 0, 0, 0, 0, 0},
-            {3, 0, 0, 0, 0, 0, 0},
-            {2, 5, 0, 0, 0, 0, 0},
-            {2, 3, 6, 0, 0, 0, 0},
-            {5, 4, 7, 3, 0, 0, 0},
-            {5, 3, 6, 5, 4, 0, 0},
-            {6, 6, 5, 6, 3, 2, 0}
-    };
 
     public void createMatrix(int numOfRows) {
         matrix = new Matrix(numOfRows);
@@ -82,7 +67,7 @@ public class MatrixService {
         for(int i = 0; i < adjacencyMatrix.length; i++) {
             operations.add(i+1);
         }
-        List<int[]> coordinates = new ArrayList<>();
+        Set<int[]> coordinates = new HashSet<>();
         int maxElem = 0;
         int maxElemRow = -1;
         int maxElemColumn = -1;
@@ -110,11 +95,9 @@ public class MatrixService {
                 for (int j = 0; j < adjacencyMatrix.length; j ++) {
                     row = coord[0];
                     column = coord[1];
-                    if (adjacencyMatrix[row][j] == maxElem &&
-                            !coordinates.contains(coord))
+                    if (adjacencyMatrix[row][j] == maxElem)
                     coordinates.add(new int[]{row, j});
-                    if (adjacencyMatrix[j][column] == maxElem &&
-                            coordinates.contains(new int[] {j, column}))
+                    if (adjacencyMatrix[j][column] == maxElem)
                         coordinates.add(new int[]{j, column});
                 }
             }
@@ -137,7 +120,7 @@ public class MatrixService {
             }
             operations.removeAll(groups.get(groups.size() - 1));
         } while(maxElem != 0);
-        if(operations.size() == 1) groups.add(new HashSet<>(operations.get(0)));
+        if(operations.size() == 1) groups.add(new HashSet<>(operations));
         return groups;
     }
 }
