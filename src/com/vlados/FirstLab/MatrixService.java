@@ -1,11 +1,26 @@
 package com.vlados.FirstLab;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MatrixService {
     private Matrix matrix;
     private List<String> uniqueOperations;
+    public Integer[][] adjacencyMatrix1 = {
+        {0, 0, 0, 0},
+        {3, 0, 0, 0},
+        {1, 4, 0, 0},
+        {4, 1, 5, 0}
+    };
+
+    public Integer[][] adjacencyMatrix2 = {
+            {0, 0, 0, 0, 0, 0, 0},
+            {3, 0, 0, 0, 0, 0, 0},
+            {2, 5, 0, 0, 0, 0, 0},
+            {2, 3, 6, 0, 0, 0, 0},
+            {5, 4, 7, 3, 0, 0, 0},
+            {5, 3, 6, 5, 4, 0, 0},
+            {6, 6, 5, 6, 3, 2, 0}
+    };
 
     public void createMatrix(int numOfRows) {
         matrix = new Matrix(numOfRows);
@@ -61,17 +76,23 @@ public class MatrixService {
       return  adjacencyMatrix;
     }
 
-    public List<List<Integer>> getGroups(Integer[][] adjacencyMatrix) {
-        List<List<Integer>> groups = new ArrayList<>();
-        List<Integer> operations = new ArrayList<>();
+    public List<Set<Integer>> getGroups(Integer[][] adjacencyMatrix) {
+        List<Set<Integer>> groups = new ArrayList<>();
+        List<Integer> operations = new LinkedList<>();
         for(int i = 0; i < adjacencyMatrix.length; i++) {
             operations.add(i+1);
         }
-        List<int[]> coords = new ArrayList<>();
-        int maxElem = -1;
+        List<int[]> coordinates = new ArrayList<>();
+        int maxElem = 0;
         int maxElemRow = -1;
         int maxElemColumn = -1;
+        int row;
+        int column;
         do {
+            maxElem = -1;
+            maxElemRow = -1;
+            maxElemColumn = -1;
+            //шукаємо максимальний елемент та його координати
             for (int i = 0; i < adjacencyMatrix.length; i++) {
                 for (int j = 0; j < adjacencyMatrix.length; j++) {
                     if(adjacencyMatrix[i][j] > maxElem) {
@@ -81,34 +102,42 @@ public class MatrixService {
                     }
                 }
             }
-            coords.add(new int[]{maxElemRow, maxElemColumn});
-            for(int i = 0; i < coords.size(); i++) {
+            if (maxElem == 0) break;
+            //додаємо координати максимального елемента в
+            coordinates.add(new int[]{maxElemRow, maxElemColumn});
+            //шукаємо ще максимальні елемени в рядку/стовпці, де було знайдено перший максимальний елемент
+            for(int[] coord : coordinates) {
                 for (int j = 0; j < adjacencyMatrix.length; j ++) {
-                    if (adjacencyMatrix[coords.get(i)[0]][j] == maxElem)
-                        coords.add(new int[]{coords.get(i)[0], j});
-                    if (adjacencyMatrix[j][coords.get(i)[0]] == maxElem)
-                        coords.add(new int[]{j, coords.get(i)[0]});
+                    row = coord[0];
+                    column = coord[1];
+                    if (adjacencyMatrix[row][j] == maxElem &&
+                            !coordinates.contains(coord))
+                    coordinates.add(new int[]{row, j});
+                    if (adjacencyMatrix[j][column] == maxElem &&
+                            coordinates.contains(new int[] {j, column}))
+                        coordinates.add(new int[]{j, column});
                 }
             }
-            groups.add(new ArrayList<>());
-            for (int[] coord : coords) {
-                if (!groups.get(groups.size() - 1).contains(coord[0] + 1)) {
+            //додаємо нову групу
+            groups.add(new HashSet<>());
+            for (int[] coord : coordinates) {
+                if(!groups.isEmpty()) {
                     groups.get(groups.size() - 1).add(coord[0] + 1);
-                }
-                if (!groups.get(groups.size() - 1).contains(coord[1] + 1)) {
                     groups.get(groups.size() - 1).add(coord[1] + 1);
                 }
             }
-            for (int i = 0; i < adjacencyMatrix.length; i++) {
-                for (int k = 0; k < groups.get(groups.size()-1).size(); k++) {
-                    adjacencyMatrix[k][i] = 0;
-                    adjacencyMatrix[i][k] = 0;
-                    operations.remove((Integer) k);
+            coordinates.clear();
+            //обнуляємо рядок/стовпець відповідно до груп
+            for (Integer elem : groups.get(groups.size() - 1)) {
+                 for (int i = 0; i < adjacencyMatrix.length; i++) {
+                    adjacencyMatrix[elem - 1][i] = 0;
+                    adjacencyMatrix[i][elem - 1] = 0;
+//                    operations.remove(k);
                 }
             }
-
+            operations.removeAll(groups.get(groups.size() - 1));
         } while(maxElem != 0);
-        if(operations.size() == 1) groups.add(new ArrayList<>(operations.get(0)));
+        if(operations.size() == 1) groups.add(new HashSet<>(operations.get(0)));
         return groups;
     }
 }

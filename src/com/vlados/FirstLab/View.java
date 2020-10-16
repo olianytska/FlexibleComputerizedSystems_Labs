@@ -18,7 +18,7 @@ public class View {
     public List<List<String>> getMatrixFromUser(int numOfRows) {
         List<List<String>> matrix = new ArrayList<>();
         for(int i = 0; i < numOfRows; i++) {
-            matrix.add(new ArrayList<>(Arrays.asList(getUsersLine().split(","))));
+            matrix.add(new ArrayList<>(Arrays.asList(getUsersLine().split(" "))));
         }
         return matrix;
     }
