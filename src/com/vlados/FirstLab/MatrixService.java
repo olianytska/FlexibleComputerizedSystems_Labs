@@ -67,14 +67,14 @@ public class MatrixService {
         for(int i = 0; i < adjacencyMatrix.length; i++) {
             operations.add(i+1);
         }
-        Set<int[]> coordinates = new HashSet<>();
-        int maxElem = 0;
-        int maxElemRow = -1;
-        int maxElemColumn = -1;
+        List<Point> coordinates = new ArrayList<>();
+        int maxElem;
+        int maxElemRow;
+        int maxElemColumn;
         int row;
         int column;
         do {
-            maxElem = -1;
+            maxElem = 0;
             maxElemRow = -1;
             maxElemColumn = -1;
             //шукаємо максимальний елемент та його координати
@@ -89,24 +89,25 @@ public class MatrixService {
             }
             if (maxElem == 0) break;
             //додаємо координати максимального елемента в
-            coordinates.add(new int[]{maxElemRow, maxElemColumn});
+            coordinates.add(new Point(maxElemRow, maxElemColumn));
             //шукаємо ще максимальні елемени в рядку/стовпці, де було знайдено перший максимальний елемент
-            for(int[] coord : coordinates) {
+            
+            for (int i = 0; i < coordinates.size(); i++) {
                 for (int j = 0; j < adjacencyMatrix.length; j ++) {
-                    row = coord[0];
-                    column = coord[1];
-                    if (adjacencyMatrix[row][j] == maxElem)
-                    coordinates.add(new int[]{row, j});
-                    if (adjacencyMatrix[j][column] == maxElem)
-                        coordinates.add(new int[]{j, column});
+                    if (adjacencyMatrix[coordinates.get(i).getRow()][j] == maxElem
+                            && !coordinates.contains(new Point(coordinates.get(i).getRow(), j)))
+                    coordinates.add(new Point(coordinates.get(i).getRow(), j));
+                    if (adjacencyMatrix[j][coordinates.get(i).getColumn()] == maxElem
+                            && !coordinates.contains(new Point(j, coordinates.get(i).getColumn())))
+                        coordinates.add(new Point(j, coordinates.get(i).getColumn()));
                 }
             }
             //додаємо нову групу
             groups.add(new HashSet<>());
-            for (int[] coord : coordinates) {
+            for (Point coord : coordinates) {
                 if(!groups.isEmpty()) {
-                    groups.get(groups.size() - 1).add(coord[0] + 1);
-                    groups.get(groups.size() - 1).add(coord[1] + 1);
+                    groups.get(groups.size() - 1).add(coord.getRow() + 1);
+                    groups.get(groups.size() - 1).add(coord.getColumn() + 1);
                 }
             }
             coordinates.clear();
