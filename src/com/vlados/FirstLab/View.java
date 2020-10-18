@@ -29,9 +29,16 @@ public class View {
         }
     }
 
-    public void printGroups(List<Set<Integer>> groups) {
-        for(Set<Integer> group : groups) {
+    public <T> void printGroups(List<ArrayList<T>> groups) {
+        for(ArrayList<T> group : groups) {
             System.out.println(group);
+        }
+    }
+
+
+    public void printMatrix(Matrix matrix) {
+        for (List<String> row: matrix.getMatrix()) {
+            System.out.println(row);
         }
     }
 }

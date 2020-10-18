@@ -1,8 +1,14 @@
 package com.vlados.FirstLab;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class MatrixService {
+    public Matrix getMatrix() {
+        return matrix;
+    }
+
+    public List<ArrayList<Integer>> groups = new ArrayList<>();
     private Matrix matrix;
     private List<String> uniqueOperations;
 
@@ -50,7 +56,7 @@ public class MatrixService {
                         count++;
                     }
                 }
-                adjacencyMatrix[j][i] = count;
+                adjacencyMatrix[j][i] = uniqueOperations.size() - count;
                 adjacencyMatrix[i][j] = 0;
                 count = 0;
             }
@@ -61,8 +67,8 @@ public class MatrixService {
       return  adjacencyMatrix;
     }
 
-    public List<Set<Integer>> getGroups(Integer[][] adjacencyMatrix) {
-        List<Set<Integer>> groups = new ArrayList<>();
+    public List<ArrayList<Integer>> getGroups(Integer[][] adjacencyMatrix) {
+        List<ArrayList<Integer>> groups = new ArrayList<>();
         List<Integer> operations = new LinkedList<>();
         for(int i = 0; i < adjacencyMatrix.length; i++) {
             operations.add(i+1);
@@ -101,12 +107,12 @@ public class MatrixService {
                 }
             }
             //додаємо нову групу
-            groups.add(new HashSet<>());
+            groups.add(new ArrayList<>());
             for (Point coordinate : coordinates) {
-                if(!groups.isEmpty()) {
+                if(!groups.get(groups.size() - 1).contains(coordinate.getRow() + 1))
                     groups.get(groups.size() - 1).add(coordinate.getRow() + 1);
+                if(!groups.get(groups.size() - 1).contains(coordinate.getColumn() + 1))
                     groups.get(groups.size() - 1).add(coordinate.getColumn() + 1);
-                }
             }
             coordinates.clear();
             //обнуляємо рядок/стовпець відповідно до груп
@@ -118,7 +124,8 @@ public class MatrixService {
             }
             operations.removeAll(groups.get(groups.size() - 1));
         } while(maxElem != 0);
-        if(operations.size() == 1) groups.add(new HashSet<>(operations));
+        if(operations.size() == 1) groups.add(new ArrayList<>(operations));
+        this.groups = groups;
         return groups;
     }
 }
