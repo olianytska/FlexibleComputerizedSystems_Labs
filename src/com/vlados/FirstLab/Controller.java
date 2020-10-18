@@ -12,7 +12,7 @@ public class Controller {
 //        System.out.println(matrixService.getUniqueOperations());
 //        Integer[][] adjacencyMatrix = matrixService.getAdjacencyMatrix();
         view.printMatrix(testData.adjacencyMatrix4);
-        view.printGroups(matrixService.getGroups(testData.adjacencyMatrix4));
+        view.printGroups(matrixService.getGroups(testData.adjacencyMatrix3));
 
     }
 }

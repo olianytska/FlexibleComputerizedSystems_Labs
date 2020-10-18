@@ -71,8 +71,6 @@ public class MatrixService {
         int maxElem;
         int maxElemRow;
         int maxElemColumn;
-        int row;
-        int column;
         do {
             maxElem = 0;
             maxElemRow = -1;
@@ -91,7 +89,7 @@ public class MatrixService {
             //додаємо координати максимального елемента в
             coordinates.add(new Point(maxElemRow, maxElemColumn));
             //шукаємо ще максимальні елемени в рядку/стовпці, де було знайдено перший максимальний елемент
-            
+
             for (int i = 0; i < coordinates.size(); i++) {
                 for (int j = 0; j < adjacencyMatrix.length; j ++) {
                     if (adjacencyMatrix[coordinates.get(i).getRow()][j] == maxElem
@@ -104,10 +102,10 @@ public class MatrixService {
             }
             //додаємо нову групу
             groups.add(new HashSet<>());
-            for (Point coord : coordinates) {
+            for (Point coordinate : coordinates) {
                 if(!groups.isEmpty()) {
-                    groups.get(groups.size() - 1).add(coord.getRow() + 1);
-                    groups.get(groups.size() - 1).add(coord.getColumn() + 1);
+                    groups.get(groups.size() - 1).add(coordinate.getRow() + 1);
+                    groups.get(groups.size() - 1).add(coordinate.getColumn() + 1);
                 }
             }
             coordinates.clear();
@@ -116,7 +114,6 @@ public class MatrixService {
                  for (int i = 0; i < adjacencyMatrix.length; i++) {
                     adjacencyMatrix[elem - 1][i] = 0;
                     adjacencyMatrix[i][elem - 1] = 0;
-//                    operations.remove(k);
                 }
             }
             operations.removeAll(groups.get(groups.size() - 1));
