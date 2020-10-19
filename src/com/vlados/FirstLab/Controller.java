@@ -27,6 +27,8 @@ public class Controller {
         view.printGroups(groupElements);
 
         List<ArrayList<String>> sortedGroupElements = groupService.sortOperationGroups(groupElements, groups);
+        sortedGroupElements = groupService.secondSortOperationGroups(groupElements, groups);
+
         view.printGroups(sortedGroupElements);
         view.printGroups(groupService.groups);
 

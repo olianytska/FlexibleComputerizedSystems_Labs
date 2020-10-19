@@ -58,6 +58,38 @@ public class GroupService {
         this.operationGroups = lists;
         return  lists;
     }
+    public List<ArrayList<String>> secondSortOperationGroups(List<ArrayList<String>> lists, List<ArrayList<Integer>> groups) {
+        int counter1 = 0;
+        int counter2 = 0;
+        for (int i = 0; i < operationGroups.size() - 1; i++) {
+            for (int j = i + 1; j < operationGroups.size(); j++) {
+                if(operationGroups.get(i).size() == operationGroups.get(j).size()) {
+                    for(int k = 0; k < groups.get(j).size(); k++) {
+                        if(operationGroups.get(i).containsAll(matrix.getMatrix().get(groups.get(j).get(k) - 1))) counter1++;
+
+                    }
+                    for(int k = 0; k < groups.get(i).size(); k++) {
+                        if(operationGroups.get(j).containsAll(matrix.getMatrix().get(groups.get(i).get(k) - 1))) counter2++;
+
+                    }
+                    if(counter2 > counter1) {
+                        ArrayList<String> temp = lists.get(j);
+                        lists.set(j, lists.get(j+1));
+                        lists.set(j+1, temp);
+
+                        ArrayList<Integer> tempInt = groups.get(j);
+                        groups.set(j, groups.get(j+1));
+                        groups.set(j+1, tempInt);
+                    }
+                }
+            }
+
+        }
+        this.groups = groups;
+        this.operationGroups = lists;
+        return  lists;
+    }
+
 
     public List<ArrayList<String>> absorbGroups() {
         for (int i = 0; i < operationGroups.size() - 1; i++) {
@@ -71,7 +103,6 @@ public class GroupService {
                     for(int k = 0; k < groups.get(j).size(); k++) {
                         if(operationGroups.get(i).containsAll(matrix.getMatrix().get(groups.get(j).get(k) - 1))) {
                             groups.get(i).add(groups.get(j).get(k));
-//                            operationGroups.get(j).removeAll(matrix.getMatrix().get(groups.get(j).get(k) - 1));
                             operationGroups.get(j).clear();
                             for(int n = 0; n < groups.get(j).size(); n++) {
                                 for (int m = 0; m < matrix.getMatrix().get(groups.get(j).get(n) - 1).size(); m++ ) {
