@@ -15,7 +15,7 @@ public class View {
     public List<List<String>> getMatrixFromUser(int numOfRows) {
         List<List<String>> matrix = new ArrayList<>();
         for(int i = 0; i < numOfRows; i++) {
-            matrix.add(new ArrayList<>(Arrays.asList(getUsersLine().split(" "))));
+            matrix.add(new ArrayList<>(Arrays.asList(getUsersLine().split(","))));
         }
         return matrix;
     }
@@ -33,6 +33,7 @@ public class View {
         for(ArrayList<T> group : groups) {
             System.out.println(group);
         }
+        System.out.println();
     }
 
 
@@ -40,5 +41,6 @@ public class View {
         for (List<String> row: matrix.getMatrix()) {
             System.out.println(row);
         }
+        System.out.println();
     }
 }

@@ -45,7 +45,7 @@ public class GroupService {
 
         for (int i = 0; i < lists.size() - 1; i++)
             for (int j = 0; j < lists.size() - i - 1; j++)
-                if (lists.get(j).size() > lists.get(j+1).size()) {
+                if (lists.get(j).size() < lists.get(j+1).size()) {
                     ArrayList<String> temp = lists.get(j);
                     lists.set(j, lists.get(j+1));
                     lists.set(j+1, temp);
@@ -68,16 +68,24 @@ public class GroupService {
                     operationGroups.remove(j);
                 }
                 else {
-                    for(int k = 0; k < matrix.getMatrix().get(groups.get(j).get(k) - 1).size(); k++) {
+                    for(int k = 0; k < groups.get(j).size(); k++) {
                         if(operationGroups.get(i).containsAll(matrix.getMatrix().get(groups.get(j).get(k) - 1))) {
-                            operationGroups.get(i).addAll(matrix.getMatrix().get(groups.get(j).get(k) - 1));
-                            groups.get(j).remove(k);
-                            operationGroups.get(j).remove(k);
+                            groups.get(i).add(groups.get(j).get(k));
+//                            operationGroups.get(j).removeAll(matrix.getMatrix().get(groups.get(j).get(k) - 1));
+                            operationGroups.get(j).clear();
+                            for(int n = 0; n < groups.get(j).size(); n++) {
+                                for (int m = 0; m < matrix.getMatrix().get(groups.get(j).get(n) - 1).size(); m++ ) {
+                                    if(n != k &&
+                                            !operationGroups.get(j).contains(matrix.getMatrix().get(groups.get(j).get(n) - 1).get(m))) {
+                                        operationGroups.get(j).add(matrix.getMatrix().get(groups.get(j).get(n) - 1).get(m));
+                                    }
+                                }
+                            }
+                            groups.get(j).remove(k);//????????????
                         }
                     }
                 }
             }
-
         }
         return operationGroups;
     }

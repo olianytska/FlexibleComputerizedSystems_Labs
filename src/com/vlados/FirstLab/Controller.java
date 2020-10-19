@@ -26,9 +26,11 @@ public class Controller {
         List<ArrayList<String>> groupElements = groupService.getOperationGroups();
         view.printGroups(groupElements);
 
-//        List<ArrayList<String>> sortedGroupElements = groupService.sortOperationGroups(groupElements, groups);
-//        view.printGroups(sortedGroupElements);
-//
-//        view.printGroups(groupService.absorbGroups());
+        List<ArrayList<String>> sortedGroupElements = groupService.sortOperationGroups(groupElements, groups);
+        view.printGroups(sortedGroupElements);
+        view.printGroups(groupService.groups);
+
+        view.printGroups(groupService.absorbGroups());
+        view.printGroups(groupService.groups);
     }
 }
